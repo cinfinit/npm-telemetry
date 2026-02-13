@@ -1,0 +1,50 @@
+{
+  "name": "npm-telemetry",
+  "version": "1.0.0",
+  "description": "See what your npm dependencies are really doing — track file access, network calls, environment reads, dynamic code, and postinstall scripts before installing.",
+  "main": "index.js",
+  "bin": {
+    "npm-telemetry": "./bin/cli.js"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "files": [
+    "bin/",
+    "lib/",
+    "README.md",
+    "package.json"
+  ],
+  "keywords": [
+    "npm",
+    "dependency-security",
+    "package-audit",
+    "npm-safety",
+    "malicious-package",
+    "postinstall-script",
+    "eval-detection",
+    "file-access",
+    "network-access",
+    "package-trust",
+    "dependency-visibility",
+    "telemetry"
+  ],
+  "author": "cinfinit",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/cinfinit/npm-telemetry/issues"
+  },
+  "homepage": "https://github.com/cinfinit/npm-telemetry#readme",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/cinfinit/npm-telemetry.git"
+  },
+  "dependencies": {
+    "@babel/parser": "^7.29.0",
+    "@babel/traverse": "^7.29.0",
+    "pacote": "^21.3.1"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

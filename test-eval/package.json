@@ -1,0 +1,12 @@
+{
+  "name": "test-eval",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "postinstall": "node index.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
