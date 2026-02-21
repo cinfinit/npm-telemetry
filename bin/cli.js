@@ -1,17 +1,12 @@
 #!/usr/bin/env node
 
-const fetchPackage = require("../lib/fetchPackage");
-const walk = require("../lib/fileWalker");
-
-const analyzeFile = require("../lib/analyzer");
-const detectPostinstall = require("../lib/postInstall");
+const analyzePackage = require("../lib/analyzePackage");
 
 // -------------------------
 // Helper: Colored console output
 // -------------------------
 const reset = "\x1b[0m";
 const red = (str) => `\x1b[31m${str}${reset}`;
-const green = (str) => `\x1b[32m${str}${reset}`;
 const yellow = (str) => `\x1b[33m${str}${reset}`;
 const cyan = (str) => `\x1b[36m${str}${reset}`;
 
@@ -27,9 +22,14 @@ function printReport(pkgName, report, coverage) {
   console.log(`🔐 Env Access: ${report.env ? yellow("YES") : "NO"}`);
   console.log(`⚙️ Child Process: ${report.childProcess ? red("YES") : "NO"}`);
 
-  if (report.usesEval) console.log(red("⚠ Dynamic code execution (eval/new Function) detected"));
-  if (report.dynamicRequire) console.log(yellow("⚠ Dynamic require detected"));
-  if (report.postinstall) console.log(red(`⚠ Postinstall script detected: ${report.postinstall}`));
+  if (report.usesEval)
+    console.log(red("⚠ Dynamic code execution (eval/new Function) detected"));
+
+  if (report.dynamicRequire)
+    console.log(yellow("⚠ Dynamic require detected"));
+
+  if (report.postinstall)
+    console.log(red(`⚠ Postinstall script detected: ${report.postinstall}`));
 
   console.log(`\n📊 Analysis Coverage: ${coverage}%\n`);
 }
@@ -45,42 +45,16 @@ async function main() {
     process.exit(0);
   }
 
-  // Initialize report
-  const report = {
-    fsRead: false,
-    fsWrite: false,
-    network: false,
-    env: false,
-    childProcess: false,
-    usesEval: false,
-    dynamicRequire: false,
-    postinstall: null,
-    coveragePenalty: 0,
-  };
+  const result = await analyzePackage(pkgName);
 
-  // Fetch package
-  // console.log(`📦 Fetching package ${pkgName}...`);
-  const packageDir = await fetchPackage(pkgName);
-
-  // If argument is a folder, use it directly; else fetch from npm
-// const packageDir = fs.existsSync(pkgName) && fs.statSync(pkgName).isDirectory()
-//   ? path.resolve(pkgName)
-//   : fetchPackage(pkgName);
-
-  // Walk files
-  const files = walk(packageDir);
-
-  // Analyze files
-  files.forEach((file) => analyzeFile(file, report));
-
-  // Detect postinstall script
-  detectPostinstall(packageDir, report);
-
-  // Calculate coverage
-  const coverage = Math.max(0, 100 - report.coveragePenalty);
-
-  // Print final report
-  printReport(pkgName, report, coverage);
+  printReport(
+    result.package,
+    result.report,
+    result.coverage
+  );
 }
 
-main();
+// Only run if executed directly
+if (require.main === module) {
+  main();
+}

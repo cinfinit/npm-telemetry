@@ -60,6 +60,75 @@ Permissions:
 
 ---
 
+## 📦 Programmatic Usage (New)
+
+`npm-telemetry` can now be used as a Node.js library in addition to the CLI.
+
+This allows you to integrate telemetry analysis into:
+
+* CI pipelines
+* Security dashboards
+* Custom scripts
+* Automated dependency checks
+
+---
+
+### ✅ CommonJS
+
+```js
+const analyzePackage = require("npm-telemetry");
+
+(async () => {
+  const result = await analyzePackage("axios");
+
+  console.log(result.coverage);
+  console.log(result.report.network);
+})();
+```
+
+---
+
+### ✅ ES Modules (ESM)
+
+```js
+import analyzePackage from "npm-telemetry";
+
+const result = await analyzePackage("axios");
+
+console.log(result.coverage);
+console.log(result.report.network);
+```
+
+---
+
+### 📊 Returned Object Structure
+
+```js
+{
+  package: "axios",
+  coverage: 92,
+  report: {
+    fsRead: false,
+    fsWrite: false,
+    network: true,
+    env: false,
+    childProcess: false,
+    usesEval: false,
+    dynamicRequire: false,
+    postinstall: null
+  }
+}
+```
+
+This makes it easy to:
+
+* Fail builds if certain permissions are detected
+* Build custom risk scoring
+* Store analysis results in a database
+* Compare versions of the same package
+
+---
+
 ## 🎯 Why This Is Huge
 
 * Makes **dependency behavior visible**
@@ -96,3 +165,33 @@ Building tools to **peek behind the curtains of your dependencies** and make npm
 When not staring at ASTs or wrangling `eval`, you can find me **overthinking variable names and writing witty READMEs**.
 
 ---
+
+# Changelog
+
+## [1.1.0] - 2026-02-21
+
+### Added
+
+* ✨ Programmatic API support (`require("npm-telemetry")`)
+* ✨ ES Module (ESM) support (`import analyzePackage from "npm-telemetry"`)
+* ✨ Dual export support via `exports` field
+* ✨ Structured analysis result return object
+
+### Changed
+
+* 🔄 Refactored internal architecture to separate:
+
+  * Core analysis engine
+  * CLI presentation layer
+* 🔄 CLI now acts as a thin wrapper around the reusable analysis engine
+
+### Technical
+
+* Added dual entry points:
+
+  * `"main"` for CommonJS
+  * `"exports"` for ESM support
+* Improved package architecture for extensibility and CI integration
+
+---
+

@@ -2,9 +2,13 @@
   "name": "npm-telemetry",
   "version": "1.0.0",
   "description": "See what your npm dependencies are really doing — track file access, network calls, environment reads, dynamic code, and postinstall scripts before installing.",
-  "main": "index.js",
+  "main": "lib/analyzePackage.js",
   "bin": {
     "npm-telemetry": "./bin/cli.js"
+  },
+  "exports": {
+    "require": "./lib/analyzePackage.js",
+    "import": "./lib/analyzePackage.mjs"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
