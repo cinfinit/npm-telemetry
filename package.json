@@ -1,6 +1,6 @@
 {
   "name": "npm-telemetry",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "See what your npm dependencies are really doing — track file access, network calls, environment reads, dynamic code, and postinstall scripts before installing.",
   "main": "lib/analyzePackage.js",
   "bin": {
